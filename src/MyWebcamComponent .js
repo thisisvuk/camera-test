@@ -1,13 +1,30 @@
-import React from 'react';
+import React, { useRef, useEffect } from 'react';
 import Webcam from 'react-webcam';
 
-const MyWebcamComponent = () => {
-  const webcamRef = React.useRef(null);
+const LiveWebcamComponent = () => {
+  const webcamRef = useRef(null);
 
-  const capture = React.useCallback(() => {
+  const capture = () => {
     const imageSrc = webcamRef.current.getScreenshot();
-    console.log("url: " + imageSrc);
-  }, [webcamRef]);
+    console.log(imageSrc);
+    // Update the live feed or perform other actions with the captured image
+  };
+
+  // Use requestAnimationFrame to continuously capture frames
+  const startCapture = () => {
+    requestAnimationFrame(() => {
+      capture();
+      startCapture();
+    });
+  };
+
+  useEffect(() => {
+    // Start the live feed when the component mounts
+    startCapture();
+
+    // Cleanup: Stop the live feed when the component unmounts
+    return () => cancelAnimationFrame(startCapture);
+  }, []);
 
   return (
     <div>
@@ -17,9 +34,9 @@ const MyWebcamComponent = () => {
         screenshotFormat="image/jpeg"
         videoConstraints={{ facingMode: 'user' }}
       />
-      <button onClick={capture}>Capture Photo</button>
+      {/* You can add a button or other UI elements here if needed */}
     </div>
   );
 };
 
-export default MyWebcamComponent;
+export default LiveWebcamComponent;
