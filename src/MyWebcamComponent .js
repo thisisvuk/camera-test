@@ -1,7 +1,7 @@
 import React, { useRef, useEffect } from 'react';
 import Webcam from 'react-webcam';
 
-const LiveWebcamComponent = () => {
+const MyWebcamComponent = () => {
   const webcamRef = useRef(null);
 
   const capture = () => {
@@ -39,4 +39,4 @@ const LiveWebcamComponent = () => {
   );
 };
 
-export default LiveWebcamComponent;
+export default MyWebcamComponent;
